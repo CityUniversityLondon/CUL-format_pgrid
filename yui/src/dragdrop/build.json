@@ -1,0 +1,12 @@
+{
+    "name": "moodle-format_pgrid-dragdrop",
+    "builds": {
+        "moodle-format_pgrid-dragdrop": {
+            "jsfiles": [
+            	"selectors.js",
+                "quicklinkdd.js",
+                "activitylinkdd.js"
+            ]
+        }
+    }
+}

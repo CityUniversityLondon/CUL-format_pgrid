@@ -1,0 +1,421 @@
+// sass --watch styles.scss:../styles.css 
+
+/*// @import "../../../../theme/boost/scss/bootstrap/_variables.scss";*/
+/*@import "cul.scss";*/
+@import "colours.scss";
+@import "mixins.scss";
+@import "dashboard.scss";
+
+body.format-pgrid {
+    .course-content ul.pgrid {
+        li.section,
+        li#toggle-all {
+            margin: 4px 1px 1px 1px;
+            border-bottom: none;
+            list-style: none;
+            .content {
+                // Default for non tablets / mobiles.  If the language file has 'culsidewidth' for the current language, then will be set in format.php. 
+                margin: 0 !important;
+                padding: 0 !important;
+                .toggle {
+                    h3.sectionname {
+                        display: block;
+                        width: auto;
+                        background-color: transparent;
+                        background-image: url([[pix:t/expanded]]); /* JavaScript disabled */
+                        background-size: 1.75rem 1.75rem;
+                        background-position: 0 6px;
+                        background-repeat: no-repeat;
+                        margin: 0 4px;                        
+                        padding-bottom: 6px;
+                        padding-top: 6px;
+                        padding-left: 24px; /* The 24px allows the arrow to be with the text next to it. */
+                        padding-right: 24px;
+                    }                    
+                    .section_availability {
+                        margin: 0 4px;                        
+                        padding-bottom: 6px;
+                        padding-left: 24px; /* The 24px allows the arrow to be with the text next to it. */
+                        padding-right: 24px;
+                    }
+                    h4 a {
+                        background-size: 1.75rem 1.75rem;
+                        background-position: 0 0;
+                        background-repeat: no-repeat;
+                        margin: 0 4px;                        
+                        padding-left: 24px; /* The 24px allows the arrow to be with the text next to it. */
+                        padding-right: 24px;
+                        cursor: pointer;
+                        font-size: 1.75rem;
+                        line-height: 1.5rem;
+                        &.off {
+                            background-image: url([[pix:t/expanded]]);
+                        //     &:hover {
+                        //         background-image: url([[pix:t/collapsed]]);
+                        //     }
+                        }
+                        &.on{
+                            background-image: url([[pix:t/collapsed]]);
+                        //     &:hover {
+                        //         background-image: url([[pix:t/expanded]]);
+                        //     }
+                        }
+                    }           
+                }
+                .toggle.collapsed {
+                    h3.sectionname {
+                        background-image: url([[pix:t/collapsed]]); /* JavaScript disabled */
+                        background-position: 0% 6px;
+                    }
+                    // h4 span {
+                    //     cursor: pointer;
+                    //     font-size: 1.4rem;
+                    //     &.off {
+                    //         background-image: url([[pix:t/expanded]]);
+                    //     //     &:hover {
+                    //     //         background-image: url([[pix:t/collapsed]]);
+                    //     //     }
+                    //     }
+                    //     &.on{
+                    //         background-image: url([[pix:t/collapsed]]);
+                    //     //     &:hover {
+                    //     //         background-image: url([[pix:t/expanded]]);
+                    //     //     }
+                    //     }
+                    // }           
+                }
+                // .toggle {
+                //     background-color: #eceeef; // @TODO
+                //     min-height: 7em;
+                //     &:hover {
+                //         background-color: #f4f4f4; // @TODO
+                //         @include gradient-horizontal(rgba($white, 0), #f4f4f4, 0, 50%);
+                //     }
+                //     span {
+                //         text-align: left;
+                //     }
+                // }
+                .sectionhead {
+                    position: relative;
+                    width: auto;
+                    margin: 2px;               
+                    padding-bottom: 1.5em;
+                    background-color: #eceeef; // @TODO
+                    min-height: 7em;
+                    cursor: pointer;
+                    &:hover {
+                        background-color: #f4f4f4; // @TODO
+                        @include gradient-horizontal(rgba($white, 0), #f4f4f4, 0, 50%);
+                    }
+                    span {
+                        text-align: left;
+                    }
+                    .truncate {
+                        display: none;                                             
+                    }
+                    .no-overflow {
+                        display: block;
+                        min-height: 3.4em; 
+                    }
+                    &.collapsed {
+                        .truncate {
+                            position: relative;
+                            display: block;
+                            overflow: hidden;
+                            height: 3.4em;
+                            width: 100%;
+                            line-height: 1.5rem;
+                            &::before {
+                                // content: "";
+                                // float: left;
+                                // width: 5px;
+                                // height: 3.4em;
+                            }
+                            > *:first-child {
+                                // float: right;
+                                // width: 100%;
+                                // margin-left: -5px;
+                            }
+                            &.truncated::after {
+                                content: "\02026";
+                                // float: right;s
+                                position: absolute;
+                                bottom: 0;
+                                // left: 100%;
+                                right: 0;
+                                width: 50%;
+                                // height: 1em;
+                                // margin-left: -50%;
+                                padding-right: 5px;
+                                text-align: right;
+                                @include gradient-horizontal(rgba($white, 0), $grey, 0, 50%);                                
+                            }
+                        }
+                        .no-overflow {
+                            display: none;
+                            line-height: 16px;
+                        }                        
+                    }
+                    h3.section-title {
+                        margin: 0 !important;
+                        padding-top: 0;
+                        padding-bottom: 0;
+                        font-size: 1.25rem;
+                        span.quickediticon img {
+                            background: transparent;
+                            border: none;
+                        }
+                    }
+                    .section-summary-activities {
+                        position: absolute;
+                        right: 4px;
+                        bottom: 0;
+                        margin-right: 4px;
+                        .activity-count {
+                            color: $nearlyblack;
+                        }
+                    }
+                    .section-summary-progress {
+                        position: absolute;
+                        left: 31px;
+                        bottom: 0;
+                        margin-right: 4px;
+                        .activity-count {
+                            color: $nearlyblack;
+                        }
+                    }
+                    &.collapsed:hover {
+                        .truncate {
+                            &.truncated::after {
+                                @include gradient-horizontal(rgba($white, 0), #f4f4f4, 0, 50%);
+                            }
+                        }
+                    }
+                }
+                .sectionbody {
+                    margin: 2px;
+                    background-color: $white;
+                    .truncate {
+                        display: none;
+                    }
+                    .no-overflow {
+                        // display: inline-block; //CMDLTWO-1638
+                    }
+                    .summary { // @TODO
+                        margin-left: 0.2em;
+                        margin-bottom: 1em;
+                        padding-left: 0;
+                        padding-top: 1em;
+                        
+                    }
+                    &.collapsed {
+                        .truncate {
+                            display: none;
+                        }
+                        .no-overflow {
+                            display: none;
+                        }
+                    }
+                    .section-modchooser {
+                        margin-right: 4px;
+                    }
+                    .activity {
+                        margin: 0.5em 0;
+                    }
+                }
+                .summary {
+                    margin-left: .2em;
+                    margin-right: .2em;
+                    padding-left: 28px;
+                    background-color: transparent!important;
+                    border: none;
+                }
+                a.sectionclose {
+                    background-image: url([[pix:t/sort_asc]]); /* JavaScript disabled */
+                    background-size: 1.75rem 1.75rem;
+                    background-position: 0 8px;
+                    background-repeat: no-repeat;
+                    margin: 0 6px;                        
+                    padding-bottom: 6px;
+                    padding-top: 6px;
+                    padding-left: 26px; /* The 24px allows the arrow to be with the text next to it. */
+                    cursor: pointer;
+                    &.collapsed {
+                        display: none;
+                    }
+                }                
+            }
+            &.sectionhidden {
+                background-color: #eceeef; // @TODO
+            }
+            .side {                
+                padding: 0;
+                a {
+                    display: block;
+                    &:first-of-type > .icon {
+                        margin-left: 0;
+                    }
+                }
+            }        
+        }
+        li:last-child .add_section {
+            display: none;
+        }
+    }
+    .insertsection {
+        text-align: center;
+        .sectionbutton {
+            display: inline-block;
+            margin: 1rem;
+        }
+    }
+}
+
+body.format-pgrid.jsenabled {
+    .course-content ul.pgrid li.section .content {
+        .toggle {
+            span.toggle_closed {
+                // background-image: url([[pix:t/collapsed]]);
+            }
+            span.toggle_open {
+                // background-image: url([[pix:t/expanded]]);
+            }
+        }
+    }
+}
+
+body.format-pgrid.editing .course-content ul.pgrid {
+    li.section,
+    li#toggle-all {
+        .content {
+            /* Default for non tablets / mobiles.  If the language file has 'culsidewidth' for the current language, then will be set in format.php. */
+            margin: 0 40px !important;
+            padding: 0 !important;
+            .inplaceeditable.inplaceeditingon .editinstructions {
+                margin-top: -30px;
+            }
+        }
+        .side {
+            padding: 10px 0 0 0;
+            .fa,
+            .section-handle {
+                padding: 2px 0;
+            }
+        }
+        &.current {
+            border-radius: 0;
+            .side {
+                .section-handle .icon {
+                    /*color: $white;*/
+                    margin-left: 0.5rem;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+// .course-content ul.pgrid li.section .content .toggle span.sectionname_wrapper, 
+// #toggle-all .content h4 span {
+//     background-color: transparent;
+//     background-repeat: no-repeat;
+//     margin: 0 4px;
+// }
+// #toggle-all .content .sectionbody h4 span.tc-medium,
+// .course-content ul.pgrid li.section .content .toggle span.tc-medium {
+//     background-size: 24px 24px;
+// }
+/* -- Set the clickable element of the Toggle -- */
+// .course-content ul.pgrid li.section .content .toggle span.sectionname_wrapper {
+//     display: block;
+//     padding-bottom: 6px;
+//     padding-top: 6px;
+//     width: auto;
+// }
+// .course-content ul.pgrid li.section .content .toggle span.sectionname_wrapper.tc-medium {
+//     padding-left: 24px; /* The 24px allows the arrow to be with the text next to it. */
+//     padding-right: 24px;
+// }
+// .course-content ul.pgrid li.section .content .toggle span.sectionname_wrapper h3,
+// .course-content ul.pgrid li.section .content.sectionhidden h3 {
+//     margin: 0;
+//     word-wrap: break-word;
+// }
+// .course-content ul.pgrid li.section .content .toggle span.sectionname_wrapper h3.section-title,
+// .course-content ul.pgrid li.section .content.sectionhidden h3.section-title {
+//     color: inherit;
+//     margin: 4px;
+// }
+// #toggle-all .content .sectionbody h4 span.tc-medium {
+//     padding-left: 26px; /* The 26px allows the arrow to be with the text next to it. */
+//     padding-right: 26px;
+// }
+
+
+
+
+
+// .course-content ul.pgrid li.current.main .right {
+//     padding: 0 0 0 0; /* Cancel out effect of above when having to use 'left' side selector for getting the correct text colour on the right for the current section.  This is because the selector '.course-content .current .left' defines the colour in the theme and therefore any CT specific 'right' implementation would not work for all themes. */
+// }
+
+// .course-content ul.pgrid li.section .right,
+// .course-content ul.pgrid li.tcsection .right {
+//     float:right;
+// }
+
+// .course-content ul.pgrid li.section .right {
+//     line-height: 1.3;
+// }
+
+// .course-content ul.pgrid li.section .right a {
+//     display: block;  /* So that section_right_content() does not implode with 'br's and get too many when the up arrow is removed by JS. */
+// }
+
+// .course-content ul.pgrid li.section .right a img.hide{
+//     display: inline;  /* CONTRIB-5817 - Align the eye icon. */
+// }
+
+
+
+
+/* cul styles */
+
+// .course-content ul.pgrid {
+//     margin: 0;
+//     list-style: none;
+// }
+
+// .course-content ul.pgrid li.section .content {
+//     margin: 0 40px;
+// }
+
+// .course-content ul.pgrid li.section .left,
+// .course-content ul.pgrid li.section .right {
+//     width: 40px;
+//     padding: 0 6px;
+// }
+
+// .course-content ul.pgrid li.section .left {
+//     padding-top: 22px;
+//     text-align: right;
+// }
+
+// .jsenabled .course-content ul.pgrid li.section .left,
+// .jsenabled .course-content ul.pgrid li.section .right {
+//     width: auto;
+// }
+
+// .course-content ul.pgrid li.section .left .section-handle img.icon {
+//     padding: 0;
+//     vertical-align: baseline;
+// }
+
+// .course-content ul.pgrid li.section .section_action_menu .textmenu,
+// .course-content ul.pgrid li.section .section_action_menu .menu-action-text {
+//     white-space: nowrap;
+// }

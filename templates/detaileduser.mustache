@@ -1,0 +1,69 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template format_pgrid/detaileduser
+
+    User details for photoboard.
+
+    Classes required for JS:
+
+    Data attributes required for JS:
+
+    Context variables required for this template:
+    * see format/course/pgrid/classes/output/photoboard.php
+
+}}
+
+    <li class="card clearfix">    
+        <div class="cul-photo card-img">
+            {{{imghtml}}}
+        </div>
+        <div class="card-body">
+            <div class="cul-username card-title">
+                <a href="{{{userlink}}}">{{fullname}}</a>
+            </div>
+            <div class="cul-info">
+                {{# email}}
+                    {{# str }} email, format_pgrid {{/ str }}<a href="mailto:{{email}}">{{email}}</a>
+                    <br />
+                {{/ email}}
+                {{# phone2}}
+                    {{# str }} mobile, format_pgrid {{/ str }} {{phone2}}
+                    <br />
+                {{/ phone2}}
+                {{# staff}}
+                    {{# str }} telephone, format_pgrid {{/ str }} {{stafftelephone}}
+                    <br />
+                    {{# str }} officehours, format_pgrid {{/ str }} {{staffofficehrs}}
+                    <br />
+                    {{# str }} buildinglocation, format_pgrid {{/ str }} {{stafflocation}}
+                    <br />
+                {{/ staff}}
+                {{# group}}
+                    {{# str }} groups, format_pgrid {{/ str }} {{group}}
+                    <br />
+                {{/ group}}            
+                {{# str }} lastaccess, format_pgrid {{/ str }} {{lastaccess}}
+            </div>            
+        </div>
+        <div class="cul-links card-footer">
+            {{# links}}
+                <a href="{{{url}}}" class="card-link">{{title}}</a>
+                <br />
+            {{/ links}}
+        </div>
+    </li>
