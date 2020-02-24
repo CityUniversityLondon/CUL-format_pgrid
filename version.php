@@ -15,20 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details.
+ * Version details
  *
- * @package   format_pgrid
- * @copyright 2018 Amanda Doughty
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    format_pgrid
+ * @copyright  2020 CAPDM Ltd (https://www.capdm.com)
+ * @copyright  based on work by 1999 onwards Martin Dougiamas (http://dougiamas.com)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020012000;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2017110800;        // Requires this Moodle version.
+$plugin->version   = 2020021802;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2019111200;        // Requires this Moodle version.
 $plugin->component = 'format_pgrid';    // Full name of the plugin (used for diagnostics).
-$plugin->maturity  = MATURITY_STABLE; // this version's maturity level.
-$plugin->dependencies = [
-    'format_culcourse' => '2018051020',
-    'theme_cul_boost' => '2018062003'
-];

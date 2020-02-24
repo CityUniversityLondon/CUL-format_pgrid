@@ -15,11 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Upgrade scripts for format_pgrid.
+ * Upgrade scripts for course format "Pgrid"
  *
- * @package   format_pgrid
- * @copyright 2018 Amanda Doughty
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    format_pgrid
+ * @copyright  2020 CAPDM Ltd (https://www.capdm.com)
+ * @copyright  based on work by 2017 Marina Glancy
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -46,27 +47,30 @@ function xmldb_format_pgrid_upgrade($oldversion) {
     // Automatically generated Moodle v3.3.0 release upgrade line.
     // Put any upgrade step following this.
 
-    $dbman = $DB->get_manager(); // loads ddl manager and xmldb classes
+    // Automatically generated Moodle v3.4.0 release upgrade line.
+    // Put any upgrade step following this.
 
-    if ($oldversion < 2018051019) {
-        // Define table format_pgrid_ext_urls.
-        $table = new xmldb_table('format_pgrid_ext_urls');
+    if ($oldversion < 2018030900) {
 
-        $table->add_field('id', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->add_field('courseid', XMLDB_TYPE_INTEGER, '18', null, XMLDB_NOTNULL, null, null);
-        $table->add_field('data', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
-        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        // During upgrade to Moodle 3.3 it could happen that general section (section 0) became 'invisible'.
+        // It should always be visible.
+        $DB->execute("UPDATE {course_sections} SET visible=1 WHERE visible=0 AND section=0 AND course IN
+        (SELECT id FROM {course} WHERE format=?)", ['pgrid']);
 
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-        $table->add_index('idx_courseid', XMLDB_INDEX_UNIQUE, ['courseid']);
-
-        if (!$dbman->table_exists($table)) {
-            $dbman->create_table($table);
-        }
-
-        // CUL Course Format savepoint reached.
-        upgrade_plugin_savepoint(true, 2018051019, 'format', 'pgrid');
+        upgrade_plugin_savepoint(true, 2018030900, 'format', 'pgrid');
     }
+
+    // Automatically generated Moodle v3.5.0 release upgrade line.
+    // Put any upgrade step following this.
+
+    // Automatically generated Moodle v3.6.0 release upgrade line.
+    // Put any upgrade step following this.
+
+    // Automatically generated Moodle v3.7.0 release upgrade line.
+    // Put any upgrade step following this.
+
+    // Automatically generated Moodle v3.8.0 release upgrade line.
+    // Put any upgrade step following this.
 
     return true;
 }

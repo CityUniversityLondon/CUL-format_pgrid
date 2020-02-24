@@ -1,4 +1,4 @@
-// Javascript functions for Topics course format
+// Javascript functions for Pgrid course format.
 
 M.course = M.course || {};
 
@@ -8,7 +8,7 @@ M.course.format = M.course.format || {};
  * Get sections config for this format
  *
  * The section structure is:
- * <ul class="CUL Course">
+ * <ul class="topics">
  *  <li class="section">...</li>
  *  <li class="section">...</li>
  *   ...
@@ -19,7 +19,7 @@ M.course.format = M.course.format || {};
 M.course.format.get_config = function() {
     return {
         container_node : 'ul',
-        container_class : "pgrid",
+        container_class : 'topics',
         section_node : 'li',
         section_class : 'section'
     };
@@ -36,15 +36,12 @@ M.course.format.get_config = function() {
 M.course.format.swap_sections = function(Y, node1, node2) {
     var CSS = {
         COURSECONTENT : 'course-content',
-        SECTIONADDMENUS : 'section_add_menus',
-        ADDSECTION : 'add_section'
+        SECTIONADDMENUS : 'section_add_menus'
     };
 
-    var sectionlist = Y.Node.all('.'+CSS.COURSECONTENT+' '+M.course.format.get_section_selector(Y));
+    var sectionlist = Y.Node.all('.' + CSS.COURSECONTENT + ' ' + M.course.format.get_section_selector(Y));
     // Swap menus.
-    sectionlist.item(node1).one('.'+CSS.SECTIONADDMENUS).swap(sectionlist.item(node2).one('.'+CSS.SECTIONADDMENUS));
-    // Swap add section link.
-    sectionlist.item(node1).one('.'+CSS.ADDSECTION).swap(sectionlist.item(node2).one('.'+CSS.ADDSECTION));
+    sectionlist.item(node1).one('.' + CSS.SECTIONADDMENUS).swap(sectionlist.item(node2).one('.' + CSS.SECTIONADDMENUS));
 }
 
 /**
@@ -78,12 +75,12 @@ M.course.format.process_sections = function(Y, sectionlist, response, sectionfro
         for (var i = sectionfrom; i <= sectionto; i++) {
             // Update section title.
             var content = Y.Node.create('<span>' + response.sectiontitles[i] + '</span>');
-            sectionlist.item(i).all('.'+CSS.SECTIONNAME).setHTML(content);
+            sectionlist.item(i).all('.' + CSS.SECTIONNAME).setHTML(content);
             // Update move icon.
             ele = sectionlist.item(i).one(SELECTORS.SECTIONLEFTSIDE);
             str = ele.getAttribute('alt');
             stridx = str.lastIndexOf(' ');
-            newstr = str.substr(0, stridx +1) + i;
+            newstr = str.substr(0, stridx + 1) + i;
             ele.setAttribute('alt', newstr);
             ele.setAttribute('title', newstr); // For FireFox as 'alt' is not refreshed.
         }
