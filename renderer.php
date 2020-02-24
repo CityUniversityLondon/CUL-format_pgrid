@@ -116,7 +116,7 @@ class format_pgrid_renderer extends format_section_renderer_base {
             return;
         }
 
-        $this->print_pearson_grid($course, $sections, $mods, $modname, $modnamesused);
+        $this->print_pearson_grid($course, $sections, $mods, $modnames, $modnamesused);
     }
 
     /**
@@ -365,6 +365,8 @@ class format_pgrid_renderer extends format_section_renderer_base {
         }
 
         // Output section completion data.
+        $o = '';
+        
         if ($total > 0) {
             $a = new stdClass;
             $a->complete = $complete;
