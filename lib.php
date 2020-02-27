@@ -224,8 +224,46 @@ class format_pgrid extends format_base {
      * @return array of options
      */
     public function course_format_options($foreditform = false) {
-        return array();
+        static $courseformatoptions = false;
+
+        $courseformatoptions = $this->course_format_dash_options($courseformatoptions, $foreditform);
+
+        return $courseformatoptions;
     }
+
+    /**
+     * Definitions of the additional options that this course format uses for course
+     *
+     * Pgrid format has no additional options.
+     *
+     * @param bool $foreditform
+     * @return array of options
+     */
+    public function course_format_dash_options($courseformatoptions, $foreditform = false) {
+
+        $dashboardclass = "local_culcourse_dashboard\\format\dashboard";
+
+        if (class_exists($dashboardclass)) {
+            $dashboard = new $dashboardclass();
+
+            if ($courseformatoptions === false) {
+                $courseformatoptions = [];
+                // Splice in the dashboard options.
+                $dashboard->set_dashboard_options($courseformatoptions);
+            }
+
+            if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
+     
+                // Splice in the dashboard edit options.
+                $dashboard->set_dashboard_edit_options($courseformatoptionsedit);
+                $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
+            }
+
+            return $courseformatoptions;            
+        }
+
+        return [];
+    }    
 
     /**
      * Adds format options elements to the course/section edit form.
@@ -237,8 +275,8 @@ class format_pgrid extends format_base {
      * @return array array of references to the added form elements.
      */
     public function create_edit_form_elements(&$mform, $forsection = false) {
-        global $COURSE;
-        $elements = parent::create_edit_form_elements($mform, $forsection);
+        global $COURSE, $PAGE;
+        $elements = parent::create_edit_form_elements($mform, $forsection);        
 
         if (!$forsection && (empty($COURSE->id) || $COURSE->id == SITEID)) {
             // Add "numsections" element to the create course form - it will force new course to be prepopulated
@@ -255,8 +293,50 @@ class format_pgrid extends format_base {
             array_unshift($elements, $element);
         }
 
+        if (!$forsection) {
+            $elements = $this->create_dash_edit_form_elements($mform, $elements);
+        }
+
         return $elements;
     }
+
+    /**
+     * Adds dashboard format options elements to the course/section edit form.
+     *
+     *
+     * @param MoodleQuickForm $mform form the elements are added to.
+     * @param array array of references to the added form elements.
+     * @return array array of references to the added form elements.
+     */
+    public function create_dash_edit_form_elements(&$mform, $elements) {
+        global $COURSE, $PAGE;
+
+        $dashboardclass = "local_culcourse_dashboard\\format\dashboard";
+
+        if (class_exists($dashboardclass)) {
+            // Convert saved course_format_options value back to an array to set the value.
+            if ($selectmoduleleaders = $mform->getElementValue('selectmoduleleaders')) {
+                if (!is_array($selectmoduleleaders)) {
+                    $mform->setDefault('selectmoduleleaders', explode(',', $selectmoduleleaders ));
+                } else {
+                    $mform->setDefault('selectmoduleleaders', $selectmoduleleaders);
+                }
+            }
+
+            // Put module leader setting in own dropdown.
+            $selectmoduleleaderhdr = $mform->addElement('header', 'selectmoduleleadershdr', get_string('setselectmoduleleadershdr', 'local_culcourse_dashboard'));
+            $mform->addHelpButton('selectmoduleleadershdr', 'setselectmoduleleadershdr', 'local_culcourse_dashboard', '', true);
+            array_splice($elements, -1, 0, [$selectmoduleleaderhdr]);                
+
+            // Put dashboard settings in own dropdown.
+            $dashboardhdr = $mform->addElement('header', 'dashboardhdr', get_string('setdashboardhdr', 'local_culcourse_dashboard'));
+            array_splice($elements, 0, 0, [$dashboardhdr]);      
+
+            $PAGE->requires->js_call_amd('local_culcourse_dashboard/updatebaseclass', 'init');
+        }
+
+        return $elements;
+    }    
 
     /**
      * Updates format options for a course
@@ -270,6 +350,8 @@ class format_pgrid extends format_base {
      * @return bool whether there were any changes to the options values
      */
     public function update_course_format_options($data, $oldcourse = null) {
+        $data = $this->update_course_format_dash_options($data, $oldcourse);
+
         $data = (array)$data;
         if ($oldcourse !== null) {
             $oldcourse = (array)$oldcourse;
@@ -284,6 +366,28 @@ class format_pgrid extends format_base {
         }
         return $this->update_format_options($data);
     }
+
+    /**
+     * Updates dashboard format options for a course
+     *
+     * In case if course format was changed to 'pgrid', we try to copy dashboard options from the previous format.
+     *
+     * @param stdClass|array $data return value from {@link moodleform::get_data()} or array with data
+     * @param stdClass $oldcourse if this function is called from {@link update_course()}
+     *     this object contains information about the course before update
+     * @return stdClass|array $data return value from {@link moodleform::get_data()} or array with data
+     */
+    public function update_course_format_dash_options($data, $oldcourse = null) {
+
+        $dashboardclass = "local_culcourse_dashboard\\format\dashboard";
+
+        if (class_exists($dashboardclass)) {
+            $dashboard = new $dashboardclass();
+            $data = $dashboard->update_dashboard_options($data, $oldcourse);
+        }
+
+        return $data;
+    }    
 
     /**
      * Whether this format allows to delete sections

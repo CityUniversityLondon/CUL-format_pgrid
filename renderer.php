@@ -112,9 +112,14 @@ class format_pgrid_renderer extends format_section_renderer_base {
 
         if ($PAGE->user_is_editing()) {
             // Use default rendering when editing.
+            // Now the dashboard.
+            echo $this->build_dashboard($course);
             parent::print_multiple_section_page($course, $sections, $mods, $modnames, $modnamesused);
             return;
         }
+
+        // Now the dashboard.
+        echo $this->build_dashboard($course);
 
         $this->print_pearson_grid($course, $sections, $mods, $modnames, $modnamesused);
     }
@@ -133,6 +138,8 @@ class format_pgrid_renderer extends format_section_renderer_base {
         global $CFG, $PAGE;
 
         if ($PAGE->user_is_editing()) {
+            // Now the dashboard.
+            echo $this->build_dashboard($course, $displaysection);
             // Use default rendering when editing.
             parent::print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection);
             return;
@@ -151,6 +158,9 @@ class format_pgrid_renderer extends format_section_renderer_base {
 
         // Copy activity clipboard..
         echo $this->course_activity_clipboard($course, $displaysection);
+
+        // Now the dashboard.
+        echo $this->build_dashboard($course, $displaysection);
 
         // Start single-section div.
         echo html_writer::start_tag('div', array('class' => 'single-section pgrid'));
@@ -521,5 +531,25 @@ class format_pgrid_renderer extends format_section_renderer_base {
         echo html_writer::end_tag('div');
         echo html_writer::end_tag('div');
         echo $this->end_section_list();
+    }
+
+    /**
+     * Generate the html for the dashboard
+     * @param stdClass $course The course entry from DB
+     * @param int $displaysection The section number in the course which is being displayed
+     * @return string HTML to output.
+     */
+    public function build_dashboard($course, $displaysection = null) {
+        $o = '';
+        $dashrenderclass = "local_culcourse_dashboard\output\dashboard";
+
+        if (class_exists($dashrenderclass)) {
+            $config = course_get_format($course)->get_format_options();
+            $dashboard = new $dashrenderclass($course, $displaysection, $config);
+            $templatecontext = $dashboard->export_for_template($this);
+            $o .= $this->render_from_template('local_culcourse_dashboard/dashboard', $templatecontext);
+        }
+
+        return $o;
     }
 }
