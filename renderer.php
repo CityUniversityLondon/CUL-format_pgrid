@@ -315,15 +315,21 @@ class format_pgrid_renderer extends format_section_renderer_base {
             return $i;
         }
 
-        $completioninfo = new completion_info($course);
+        // If Recycle bin is being used, and an activity is deleted, then
+        // this field will be set to 1, so is in the process of being deleted
+        // as a background task, but still exists as a $mod for these purposes,
+        // so skip showing a blank whitespace if being deleted.
+        if ($mod->deletioninprogress === 0) {
 
-        echo html_writer::start_tag('li', array('class' => 'pucl-part'));
-        echo html_writer::start_tag('div', array('class' => 'pucl-part-box'));
-        echo $this->courserenderer->course_section_cm_name($mod, array());
-        echo $this->courserenderer->course_section_cm_completion($course, $completioninfo, $mod, array());
-        echo html_writer::end_tag('div');
-        echo html_writer::end_tag('li');
+            $completioninfo = new completion_info($course);
 
+            echo html_writer::start_tag('li', array('class' => 'pucl-part'));
+            echo html_writer::start_tag('div', array('class' => 'pucl-part-box'));
+            echo $this->courserenderer->course_section_cm_name($mod, array());
+            echo $this->courserenderer->course_section_cm_completion($course, $completioninfo, $mod, array());
+            echo html_writer::end_tag('div');
+            echo html_writer::end_tag('li');
+        }
         return $i + 1;
     }
 
@@ -376,7 +382,7 @@ class format_pgrid_renderer extends format_section_renderer_base {
 
         // Output section completion data.
         $o = '';
-        
+
         if ($total > 0) {
             $a = new stdClass;
             $a->complete = $complete;
