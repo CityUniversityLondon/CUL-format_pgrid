@@ -10,7 +10,8 @@ body.format-pgrid {
                 margin: 0 40px;
             }
 
-            .left, .right {
+            .left,
+            .right {
                 width: 40px;
                 padding: 0 6px;
             }
@@ -26,7 +27,8 @@ body.format-pgrid {
             }
 
             .section_action_menu {
-                .textmenu, .menu-action-text {
+                .textmenu,
+                .menu-action-text {
                     white-space: nowrap;
                 }
             }
@@ -34,7 +36,8 @@ body.format-pgrid {
     }
 
     .jsenabled .course-content ul.pgrid li.section {
-        .left, .right {
+        .left,
+        .right {
             width: auto;
         }
     }

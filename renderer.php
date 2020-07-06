@@ -178,13 +178,14 @@ class format_pgrid_renderer extends format_section_renderer_base {
         $courseurl = new moodle_url('/course/view.php', array('id' => $course->id));
         $sectiontitle .= html_writer::start_tag('span', array('class' => 'pucl-weeks-back-link mdl-left'));
         $sectiontitle .= html_writer::tag('a', '&lt; '.get_string('weeks', 'format_pgrid'),
-            array('href' => $courseurl->out(), 'alt' => get_string('backtoweeks', 'format_pgrid')));
+            array('href' => $courseurl->out(), 'aria-label' => get_string('backtoweeks', 'format_pgrid')));
         $sectiontitle .= html_writer::end_tag('span');
         if (file_exists($CFG->dirroot . "/mod/journal/index.php")) {
             $journalsurl = new moodle_url('/mod/journal/index.php', array('id' => $course->id));
             $sectiontitle .= html_writer::start_tag('span', array('class' => 'pucl-journals-link mdl-right'));
             $sectiontitle .= html_writer::start_tag('a', array('href' => $journalsurl->out(),
-                'alt' => get_string('journalslist', 'format_pgrid')));
+                                                               'title' => get_string('journalslist', 'format_pgrid'),
+                                                               'aria-label' => get_string('journalslist', 'format_pgrid')));
             $sectiontitle .= html_writer::img($this->output->image_url('JournalWhite', 'format_pgrid'), '');
             $sectiontitle .= html_writer::end_tag('a');
             $sectiontitle .= html_writer::end_tag('span');
@@ -236,7 +237,8 @@ class format_pgrid_renderer extends format_section_renderer_base {
         $mod = $modinfo->cms[$modinfo->sections[$section->section][$i]];
         echo html_writer::start_tag('li', array('class' => 'pucl-topic'));
         // Output topic heading.
-        echo html_writer::start_tag('a', array('class' => 'pucl-toggle'));
+        echo html_writer::start_tag('a', array('class' => 'pucl-toggle',
+                                               'aria-expanded' => ($i === 0)?"true":"false"));
         echo html_writer::start_tag('div', array('class' => 'pucl-topic-heading'));
         if ($i === 0) {
             echo '<i class="fa fa-chevron-up" aria-hidden="true"></i>&nbsp;';
@@ -325,8 +327,16 @@ class format_pgrid_renderer extends format_section_renderer_base {
 
             echo html_writer::start_tag('li', array('class' => 'pucl-part'));
             echo html_writer::start_tag('div', array('class' => 'pucl-part-box'));
-            echo $this->courserenderer->course_section_cm_name($mod, array());
-            echo $this->courserenderer->course_section_cm_completion($course, $completioninfo, $mod, array());
+            if ($mod->uservisible && !$mod->is_stealth()) {
+                echo $this->courserenderer->course_section_cm_name($mod, array());
+                echo $this->courserenderer->course_section_cm_completion($course, $completioninfo, $mod, array());
+            } else {
+                // Hidden activity - so display title without a link
+                $textclasses = 'instancename dimmed dimmed_text';
+                echo html_writer::tag('div', $mod->get_formatted_name(), array('class' => $textclasses));
+                echo html_writer::tag('div', get_string('notyetavailable', 'format_pgrid'), array('class' => 'dimmed dimmed_text'));
+            }
+
             echo html_writer::end_tag('div');
             echo html_writer::end_tag('li');
         }
@@ -517,18 +527,19 @@ class format_pgrid_renderer extends format_section_renderer_base {
         // Render as a ul, using css to turn into a responsive grid.
         echo html_writer::start_tag('div', array('class' => 'weeks-holder'));
         echo html_writer::start_tag('div', array('class' => 'weeks-layout'));
-        echo html_writer::start_tag('h3', array('class' => 'sectionnamex'));
+        echo html_writer::start_tag('div', array('class' => 'sectionnamex'));
         echo get_string('weeks', 'format_pgrid');
         if (file_exists($CFG->dirroot . "/mod/journal/index.php")) {
             $journalsurl = new moodle_url('/mod/journal/index.php', array('id' => $course->id));
             echo html_writer::start_tag('span', array('class' => 'pucl-journals-link float-right'));
             echo html_writer::start_tag('a', array('href' => $journalsurl->out(),
-                'alt' => get_string('journalslist', 'format_pgrid')));
+                                                   'title' => get_string('journalslist', 'format_pgrid'),
+                                                   'aria-label' => get_string('journalslist', 'format_pgrid')));
             echo html_writer::img($this->output->image_url('JournalWhite', 'format_pgrid'), '');
             echo html_writer::end_tag('a');
             echo html_writer::end_tag('span');
         }
-        echo html_writer::end_tag('h3');
+        echo html_writer::end_tag('div');
         echo html_writer::start_tag('ul');
         foreach ($sections as $thissection) {
             echo $this->section_summary($thissection, $course, null);

@@ -40,3 +40,4 @@ $string['privacy:metadata'] = 'The PGrid format plugin does not store any person
 $string['weeks'] = 'Weeks';
 $string['journalslist'] = 'List of Journals in this course';
 $string['backtoweeks'] = 'Back to weeks page';
+$string['notyetavailable'] = 'Not yet available';

@@ -37,6 +37,7 @@ define(['jquery'], function($) {
                     $this.next().removeClass('show');
                     $this.next().slideUp(350);
                     $this.find('i').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                    $this.attr('aria-expanded', 'false');
                 } else {
                     $this.parent().parent().find('li .pucl-collection-parts-level')
                         .removeClass('show');
@@ -44,9 +45,11 @@ define(['jquery'], function($) {
                         .slideUp(350);
                     $this.parent().parent().find('li .pucl-collection-parts-level')
                         .prev().find('i').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                    $this.parent().parent().find('li.pucl-topic a.pucl-toggle').attr('aria-expanded', 'false');
                     $this.next().toggleClass('show');
                     $this.next().slideToggle(350);
                     $this.find('i').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                    $this.attr('aria-expanded', 'true');
                 }
             });
         }
